@@ -13,7 +13,16 @@ export default async (
 			const el = await page.waitForSelector('span>span>span[jsaction]', {
 				timeout
 			});
-			result[i] = await el.evaluate((e) => e.textContent);
+                        result[i] = await el.evaluate((e) => {
+                            const rows = document.querySelectorAll(
+                                'span>span>span[jsaction]'
+                            );
+                            let text = '';
+                            rows.forEach((row) => {
+                                text += row.textContent;
+                            });
+                            return text;
+                        });
 		} catch (err) {
 			await browser.close();
 			throw err;
